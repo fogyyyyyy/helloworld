@@ -1,0 +1,130 @@
+package 科研信息管理系统;
+import java.sql.*;
+import java.util.Scanner;
+ 
+public class Sql {
+ public void AddScienceProject(ScienceProject scienceProject)
+ {
+  try
+  {
+   Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+   String conStr="jdbc:oracle:thin:@localhost:1521:XE";
+   Connection con=DriverManager.getConnection(conStr,"system","1");
+   StringBuffer sql=new StringBuffer("insert into science values("+scienceProject.GetNum()+",'"+scienceProject.GetName()+"','"+scienceProject.GetPeople()+"','"+scienceProject.GetLeader()+"','"+scienceProject.GetTimeStart()+"','"+scienceProject.GetTimeFinish()+"')");
+ 
+   Statement st=con.createStatement();
+   st.execute(sql.toString());
+   st.close();
+   con.close(); 
+  } 
+  catch (Exception e) 
+  {
+  // TODO: handle exception
+ 
+  System.out.println(e.toString());
+  }
+ }
+ public void DelScienceProject(ScienceProject scienceProject)
+ {
+  try
+  {
+  Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+  String conStr="jdbc:oracle:thin:@localhost:1521:XE";
+  Connection con=DriverManager.getConnection(conStr,"system","1");
+  StringBuffer sql=new StringBuffer("delete from science where num="+scienceProject.GetNum()+""); 
+  Statement st=con.createStatement();
+  st.execute(sql.toString());
+  st.close();
+  con.close();
+  } 
+  catch (Exception e) 
+  {
+  // TODO: handle exception
+  System.out.println(e.toString());
+  }
+ 
+ }
+ public void UpdScienceProject(ScienceProject scienceProject)
+ {
+  try
+  {
+  Class.forName("oracle.jdbc.driver.OracleDriver").newInstance(); 
+  String conStr="jdbc:oracle:thin:@localhost:1521:XE";
+  Connection con=DriverManager.getConnection(conStr,"system","1");
+  StringBuffer sql =new StringBuffer("update science set name='"+scienceProject.GetName()+"',workpeople='"+scienceProject.GetPeople()+"',manager='"+scienceProject.GetLeader()+"',timestart='"+scienceProject.GetTimeStart()+"',timeend='"+scienceProject.GetTimeFinish()+"' where num="+scienceProject.GetNum()+"");
+  Statement st=con.createStatement();
+  st.execute(sql.toString());
+  st.close();
+  con.close();
+  }
+  catch (Exception e) 
+  {
+  // TODO: handle exception
+   System.out.println("修改异常");
+  System.out.println(e.toString());
+  }
+ }
+ public ScienceProject Findbynum(int num)
+ {
+  ScienceProject scienceProject=new ScienceProject();
+  try
+  {
+   Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+   String conStr="jdbc:oracle:thin:@localhost:1521:XE";
+   Connection con=DriverManager.getConnection(conStr,"system","1");
+   StringBuffer sql=new StringBuffer("select * from science where num="+num+"");
+   Statement st=con.createStatement();
+   ResultSet rs=st.executeQuery(sql.toString());
+   while(rs.next())
+   {
+    scienceProject.SetNum(rs.getInt(1));
+    scienceProject.SetName(rs.getString(2));
+    scienceProject.SetPeople(rs.getString(3));
+    scienceProject.SetLeader(rs.getString(4));
+    scienceProject.SetTimeStart(rs.getString(5));
+    scienceProject.SetTimeFinish(rs.getString(6));
+   }
+   st.close();
+   con.close();
+  } 
+  catch (Exception e) {
+  // TODO: handle exception
+  System.out.println(e.toString());
+  }
+ return scienceProject; 
+ }
+ public ScienceProject Look()
+ {
+  ScienceProject scienceProject=new ScienceProject();
+  try
+   {
+   Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+   String conStr="jdbc:oracle:thin:@localhost:1521:XE";
+   Connection con=DriverManager.getConnection(conStr,"system","1");
+   StringBuffer sql=new StringBuffer("select *from science");
+   Statement st=con.createStatement();
+   ResultSet rs=st.executeQuery(sql.toString());
+   while(rs.next())
+   { 
+    scienceProject.SetNum(rs.getInt(1));
+    scienceProject.SetName(rs.getString(2));
+    scienceProject.SetPeople(rs.getString(3));
+    scienceProject.SetLeader(rs.getString(4));
+    scienceProject.SetTimeStart(rs.getString(5));
+    scienceProject.SetTimeFinish(rs.getString(6));
+   }
+   st.close();
+   con.close();
+ } 
+  catch (Exception ex) 
+  {
+  // TODO: handle exception
+  System.out.println(ex.toString());
+  }
+ return scienceProject;
+ }
+ public static void main(String args[])
+ {
+ 
+ }
+}

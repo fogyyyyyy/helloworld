@@ -1,0 +1,508 @@
+package 科研信息管理系统;
+import javax.swing.*;
+
+import java.awt.*;
+import java.awt.event.*;
+ 
+import javax.swing.event.*;
+import javax.swing.tree.*;
+ 
+public class WindowsView implements TreeSelectionListener,ActionListener //窗口类
+{
+ JFrame main;
+ JPanel leftPa;
+ JPanel upPa;
+ JPanel downPa;
+ 
+ ///查询用控件
+ JLabel numLa; //通过项目编号查询
+ JTextField numTxt;
+ JButton numBt;
+ 
+ JTextField nameTxt; //显示项目名称的文本框
+ JTextField peopleTxt; //显示参与人员
+ JTextField principalTxt; //显示主要负责人
+ JTextField timeStartTxt; //显示开始时间的文本框
+ JTextField timeEndTxt; //显示预期结束时间的文本框
+ 
+ //增加用控件
+ JLabel anumLa; 
+ JLabel anameLa;
+ JLabel apeopleLa;
+ JLabel aprincipalLa;
+ JLabel atimeStartLa;
+ JLabel atimeEndLa;
+ 
+ JTextField anumTxt;
+ JTextField anameTxt;
+ JTextField apeopleTxt;
+ JTextField aprincipalTxt;
+ JTextField atimeStartTxt;
+ JTextField atimeEndTxt;
+ JButton addBt;
+ JTable showTable;
+ 
+ //删除用控件
+ JLabel dnumLa; 
+ JButton dnumBt;
+ JTextField dnumTxt;
+ 
+ //修改用控件
+ JLabel alnumLa; 
+ JTextField allnumTxt;
+ JButton alseBt;
+ JButton alBt;
+ 
+ JLabel allnumLa; 
+ JLabel alnameLa;
+ JLabel alpeopleLa;
+ JLabel alprincipalLa;
+ JLabel altimeStartLa;
+ JLabel altimeEndLa;
+ JTextField alnumTxt;
+ JTextField alnameTxt;
+ JTextField alpeopleTxt;
+ JTextField alprincipalTxt;
+ JTextField altimeStartTxt;
+ JTextField altimeEndTxt;
+ 
+ public void SciencePro()
+ {
+  main=new JFrame();
+  main.setSize(800,800);
+  main.setTitle("科研信息管理");
+  main.setLayout(null);
+ 
+ 
+  leftPa=new JPanel();
+  leftPa.setSize(150, 600);
+  leftPa.setLocation(0, 0);
+  leftPa.setBackground(Color.white);
+  initLeftPanel();
+  main.add(leftPa);
+ 
+  upPa=new JPanel();
+  upPa.setSize(650, 400);
+  upPa.setLocation(150, 0);
+  upPa.setBackground(Color.gray);
+  main.add(upPa);
+ 
+  downPa=new JPanel();
+  downPa.setSize(650, 400);
+  downPa.setLocation(150, 400);
+  downPa.setBackground(Color.orange);
+  main.add(downPa);
+ 
+ 
+  main.setVisible(true);
+ }
+ 
+ private void initLeftPanel()
+ {
+  String[] strs={"查询","增加","删除","修改"};
+  JTree tree=new JTree(strs);
+  tree.addTreeSelectionListener(this);
+  leftPa.add(tree);
+ }
+ 
+ public void valueChanged(TreeSelectionEvent e)
+ {
+  JTree tree=(JTree)e.getSource();
+  DefaultMutableTreeNode selectionNode =(DefaultMutableTreeNode)tree.getLastSelectedPathComponent();
+  String str=selectionNode.toString();
+  if(str.equals("查询"))
+  {
+   initUpDownPaWhenSearch();
+  }
+  if(str.equals("增加"))
+  {
+   initUpDownPaWhenAdd();
+  }
+  if(str.equals("删除"))
+  {
+   initUpDownPaWhenDelete();
+  }
+  if(str.equals("修改"))
+  {
+   initUpDownPaWhenAlert();
+  }
+ }
+ 
+ private void initUpDownPaWhenSearch()
+ {
+  //清空上下面板上的控件
+  upPa.removeAll();
+  downPa.removeAll();
+  //动态的加载上面板的控件
+  upPa.setLayout(null);
+  numLa=new JLabel();
+  numLa.setText("请输入项目编号");
+  numLa.setLocation(40, 60);
+  numLa.setSize(100, 40);
+ 
+ 
+  numTxt=new JTextField();
+  numTxt.setLocation(180, 60);
+  numTxt.setSize(200, 30);
+ 
+ 
+  numBt=new JButton();
+  numBt.setText("查询");
+  numBt.addActionListener(this);
+  numBt.setLocation(250, 160);
+  numBt.setSize(60, 30);
+  upPa.add(numLa);
+  upPa.add(numTxt);
+  upPa.add(numBt);
+  upPa.validate();
+  upPa.repaint();
+  numBt.addActionListener(this);
+  //动态的加载下面板的控件
+ 
+  nameTxt=new JTextField();
+  nameTxt.setLocation(80, 50);
+  nameTxt.setSize(300, 30);
+ 
+  peopleTxt=new JTextField();
+  peopleTxt.setLocation(80, 100);
+  peopleTxt.setSize(300, 30);
+ 
+  principalTxt=new JTextField();
+  principalTxt.setLocation(80, 150);
+  principalTxt.setSize(300, 30);
+ 
+  timeStartTxt=new JTextField();
+  timeStartTxt.setLocation(80, 200);
+  timeStartTxt.setSize(300, 30);
+ 
+  timeEndTxt=new JTextField();
+  timeEndTxt.setLocation(80,250);
+  timeEndTxt.setSize(300, 30);
+ 
+  downPa.setLayout(null);
+  downPa.add(nameTxt);
+  downPa.add(peopleTxt);
+  downPa.add(principalTxt);
+  downPa.add(timeStartTxt);
+  downPa.add(timeEndTxt);
+  downPa.validate();
+  downPa.repaint();
+ 
+ }
+ 
+ public void actionPerformed(ActionEvent e)
+ {
+  JButton bt=(JButton)e.getSource();
+  //bt.addActionListener(this);
+  if(bt.getText().equals("查询"))
+  {
+   if(numTxt.getText().equals(""))
+   {
+    JOptionPane.showMessageDialog(null, "请输入项目编号");
+   }
+   else
+   {
+    DealSearch deal=new DealSearch();
+    String inf=deal.findProByNum(Integer.parseInt(numTxt.getText().trim()));
+    if((inf!=null)&&(!inf.equals("")))
+    {
+     String[] strs=inf.split(",");
+     nameTxt.setText(strs[1]);
+     peopleTxt.setText(strs[2]);
+     principalTxt.setText(strs[3]);
+     timeStartTxt.setText(strs[4]);
+     timeEndTxt.setText(strs[5]);
+    }
+   }
+  }
+  if(bt.getText().equals("新增"))
+  {
+   if (anumTxt.getText().equals("")||anameTxt.getText().equals("")||apeopleTxt.getText().equals("")||aprincipalTxt.getText().equals("")||atimeStartTxt.getText().equals("")||atimeEndTxt.getText().equals(""))
+   {
+    JOptionPane.showMessageDialog(null, "输入中不能有空值！！");
+   }
+   else
+   {
+    ScienceProject s=new ScienceProject();
+    s.SetNum(Integer.parseInt(anumTxt.getText()));
+    s.SetName(anameTxt.getText());
+    s.SetPeople(apeopleTxt.getText());
+    s.SetLeader(aprincipalTxt.getText());
+    s.SetTimeStart(atimeStartTxt.getText());
+    s.SetTimeFinish(atimeEndTxt.getText());
+    DealAdd deal=new DealAdd();
+    deal.add(s);
+   }
+  }
+  if(bt.getText().equals("删除"))
+  {
+   if(Integer.parseInt(dnumTxt.getText())==0)
+   {
+    JOptionPane.showMessageDialog(null, "不能删除空的项目编号！！");
+   }
+   else
+   {
+    DealDelete deal=new DealDelete();
+    deal.delete(Integer.parseInt(dnumTxt.getText().trim()));
+   }
+  }
+  if(bt.getText().equals("提交"))
+  {
+   if(Integer.parseInt(allnumTxt.getText())==0)
+   {
+    JOptionPane.showMessageDialog(null, "不能修改空的项目编号！！");
+   }
+   else
+   {
+    DealSub deal=new DealSub();
+    deal.submit(Integer.parseInt(allnumTxt.getText()));
+   }
+  }
+  if(bt.getText().equals("修改"))
+  {
+   if (alnameTxt.getText().equals("")||alpeopleTxt.getText().equals("")||alprincipalTxt.getText().equals("")||altimeStartTxt.getText().equals("")||altimeEndTxt.getText().equals(""))
+   {
+    JOptionPane.showMessageDialog(null, "输入中不能有空值！！");
+   }
+   else
+   {
+    ScienceProject s=new ScienceProject();
+    s.SetNum(Integer.parseInt(allnumTxt.getText()));
+ 
+    s.SetName(alnameTxt.getText());
+    s.SetPeople(alpeopleTxt.getText());
+    s.SetLeader(alprincipalTxt.getText());
+    s.SetTimeStart(altimeStartTxt.getText());
+    s.SetTimeFinish(altimeEndTxt.getText());
+    DealAlter deal=new DealAlter();
+    deal.alter(s);
+   }
+  }
+ }
+ 
+ private void initUpDownPaWhenAdd()
+ {
+  //清空上下面板上的控件
+  upPa.removeAll();
+  downPa.removeAll();
+  //动态的加载上面板的控件
+  upPa.setLayout(null);
+ 
+  anumLa=new JLabel();
+  anumLa.setText("请输入要增加的项目编号");
+  anumLa.setLocation(30, 50);
+  anumLa.setSize(150, 40);
+ 
+  anumTxt=new JTextField();
+  anumTxt.setLocation(200, 50);
+  anumTxt.setSize(250, 30);
+ 
+  anameLa=new JLabel();
+  anameLa.setText("请输入要增加的项目名称");
+  anameLa.setLocation(30, 100);
+  anameLa.setSize(150, 40);
+ 
+  anameTxt=new JTextField();
+  anameTxt.setLocation(200, 100);
+  anameTxt.setSize(250, 30);
+ 
+  apeopleLa=new JLabel();
+  apeopleLa.setText("请输入项目参与人员");
+  apeopleLa.setLocation(30, 150);
+  apeopleLa.setSize(150, 40);
+ 
+  apeopleTxt=new JTextField();
+  apeopleTxt.setLocation(200, 150);
+  apeopleTxt.setSize(250, 30);
+ 
+  aprincipalLa=new JLabel();
+  aprincipalLa.setText("请输入项目负责人");
+  aprincipalLa.setLocation(30, 200);
+  aprincipalLa.setSize(150, 40);
+ 
+  aprincipalTxt=new JTextField();
+  aprincipalTxt.setLocation(200, 200);
+  aprincipalTxt.setSize(250, 30);
+ 
+  atimeStartLa=new JLabel();
+  atimeStartLa.setText("请输入项目开始时间");
+  atimeStartLa.setLocation(30, 250);
+  atimeStartLa.setSize(150, 40);
+ 
+  atimeStartTxt=new JTextField();
+  atimeStartTxt.setLocation(200, 250);
+  atimeStartTxt.setSize(250, 30);
+ 
+  atimeEndLa=new JLabel();
+  atimeEndLa.setText("请输入项目结束时间");
+  atimeEndLa.setLocation(30, 300);
+  atimeEndLa.setSize(150, 40);
+ 
+  atimeEndTxt=new JTextField();
+  atimeEndTxt.setLocation(200, 300);
+  atimeEndTxt.setSize(250, 30);
+ 
+  addBt=new JButton();
+  addBt.setText("新增");
+  addBt.addActionListener(this);
+  //addBt.addMouseListener(this);
+  addBt.setLocation(250, 340);
+  addBt.setSize(60, 30);
+ 
+  upPa.add(addBt);
+  upPa.add(anumLa);
+  upPa.add(anameLa);
+  upPa.add(apeopleLa);
+  upPa.add(aprincipalLa);
+  upPa.add(atimeStartLa);
+  upPa.add(atimeEndLa);
+  upPa.add(anameTxt);
+  upPa.add(anumTxt);
+  upPa.add(apeopleTxt);
+  upPa.add(aprincipalTxt);
+  upPa.add(atimeStartTxt);
+  upPa.add(atimeEndTxt);
+  upPa.validate();
+  upPa.repaint();
+ 
+  downPa.validate();
+  downPa.repaint();
+ }
+ 
+ private void initUpDownPaWhenDelete()
+ {
+  //清空上下面板上的控件
+  upPa.removeAll();
+  downPa.removeAll();
+  //动态的加载上面板的控件
+  upPa.setLayout(null);
+  numLa=new JLabel();
+  numLa.setText("请输入要删除的项目编号");
+  numLa.setLocation(40, 60);
+  numLa.setSize(150, 40);
+ 
+  dnumTxt=new JTextField();
+  dnumTxt.setLocation(200, 60);
+  dnumTxt.setSize(250, 30);
+ 
+  dnumBt=new JButton();
+  dnumBt.setText("删除");
+  dnumBt.addActionListener(this);
+  dnumBt.setLocation(270, 170);
+  dnumBt.setSize(60, 30);
+ 
+  upPa.add(numLa);
+  upPa.add(dnumTxt);
+  upPa.add(dnumBt);
+  upPa.validate();
+  upPa.repaint();
+ 
+  downPa.validate();
+  downPa.repaint();
+ }
+ 
+ private void initUpDownPaWhenAlert()
+ {
+  //清空上下面板上的控件
+  upPa.removeAll();
+  downPa.removeAll();
+  //动态的加载上面板的控件
+  upPa.setLayout(null);
+  alnumLa=new JLabel();
+  alnumLa.setText("请输入要修改的项目编号");
+  alnumLa.setLocation(40, 60);
+  alnumLa.setSize(150, 40);
+ 
+  alseBt=new JButton();
+  alseBt.setText("提交");
+  alseBt.addActionListener(this);
+  alseBt.setLocation(270, 170);
+  alseBt.setSize(60, 30);
+ 
+  allnumTxt=new JTextField();
+  allnumTxt.setLocation(200, 60);
+  allnumTxt.setSize(200, 30);
+ 
+  upPa.add(alnumLa);
+  upPa.add(alseBt);
+  upPa.add(allnumTxt);
+  upPa.validate();
+  upPa.repaint();
+ 
+  alBt=new JButton();
+  alBt.setText("修改");
+  alBt.addActionListener(this);
+  alBt.setLocation(450, 170);
+  alBt.setSize(60, 30);
+ 
+ /*  allnumLa=new JLabel();
+  allnumLa.setText("请输入修改后的项目编号");
+  allnumLa.setLocation(30, 00);
+  allnumLa.setSize(150, 40);
+ 
+  alnumTxt=new JTextField();
+  alnumTxt.setLocation(180, 00);
+  alnumTxt.setSize(250, 30);*/
+ 
+  alnameLa=new JLabel();
+  alnameLa.setText("请输入修改后项目名称");
+  alnameLa.setLocation(30, 50);
+  alnameLa.setSize(150, 40);
+ 
+  alnameTxt=new JTextField();
+  alnameTxt.setLocation(180, 50);
+  alnameTxt.setSize(250, 30);
+ 
+  alpeopleLa=new JLabel();
+  alpeopleLa.setText("请重设参与人员");
+  alpeopleLa.setLocation(30, 100);
+  alpeopleLa.setSize(150, 40);
+ 
+  alpeopleTxt=new JTextField();
+  alpeopleTxt.setLocation(180, 100);
+  alpeopleTxt.setSize(250, 30);
+ 
+  alprincipalLa=new JLabel();
+  alprincipalLa.setText("请重设项目负责人");
+  alprincipalLa.setLocation(30, 150);
+  alprincipalLa.setSize(150, 40);
+ 
+  alprincipalTxt=new JTextField();
+  alprincipalTxt.setLocation(180, 150);
+  alprincipalTxt.setSize(250, 30);
+ 
+  altimeStartLa=new JLabel();
+  altimeStartLa.setText("请重设项目开始时间");
+  altimeStartLa.setLocation(30, 200);
+  altimeStartLa.setSize(150, 40);
+ 
+  altimeStartTxt=new JTextField();
+  altimeStartTxt.setLocation(180, 200);
+  altimeStartTxt.setSize(250, 30);
+ 
+  altimeEndLa=new JLabel();
+  altimeEndLa.setText("请重设项目结束时间");
+  altimeEndLa.setLocation(30, 250);
+  altimeEndLa.setSize(150, 40);
+ 
+  altimeEndTxt=new JTextField();
+  altimeEndTxt.setLocation(180, 250);
+  altimeEndTxt.setSize(250, 30);
+  downPa.add(alBt);
+  //downPa.add(allnumLa);
+  downPa.add(alnameLa);
+  downPa.add(alpeopleLa);
+  downPa.add(alprincipalLa);
+  downPa.add(altimeStartLa);
+  downPa.add(altimeEndLa);
+  downPa.add(alnameTxt);
+  //downPa.add(alnumTxt);
+  downPa.add(alpeopleTxt);
+  downPa.add(alprincipalTxt);
+  downPa.add(altimeStartTxt);
+  downPa.add(altimeEndTxt);
+  downPa.setLayout(null);
+  downPa.validate();
+  downPa.repaint();
+ }
+}

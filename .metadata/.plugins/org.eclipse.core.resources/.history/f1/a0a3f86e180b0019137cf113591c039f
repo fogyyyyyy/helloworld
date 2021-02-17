@@ -1,0 +1,145 @@
+package 科研信息管理系统;
+
+
+import java.awt.*;
+import java.awt.event.*;
+ 
+import javax.swing.*;
+ 
+public class LoginWindows extends Frame implements WindowListener,ActionListener 
+{
+ public Label lgLabel; //用户名标签
+ public Label pwdLabel; //密码标签
+ public TextField lgText; //用户名文本框
+ public TextField pwdText; //密码文本框
+ public Button lgBt;   //登录按钮
+ public Button quitBt;  //退出按钮
+ 
+  public LoginWindows()
+  {
+   super();
+   this.setSize(400, 300);
+   this.setTitle("科研信息管理系统");
+   this.setLayout(null);
+ 
+   lgLabel=new Label();
+   lgLabel.setText("登录账号:");
+   lgLabel.setSize(60, 30);
+   lgLabel.setLocation(70,70);
+ 
+   pwdLabel=new Label();
+   pwdLabel.setText("密  码:");
+   pwdLabel.setSize(60,30);
+   pwdLabel.setLocation(70, 150);
+ 
+   lgText=new TextField();
+   lgText.setSize(180, 30);
+   lgText.setLocation(140, 70);
+ 
+   pwdText=new TextField();
+   pwdText.setSize(180,30);
+   pwdText.setLocation(140, 150);
+ 
+   lgBt=new Button();
+   lgBt.setLabel("登录");
+   lgBt.setSize(60,30);
+   lgBt.setLocation(120, 220);
+ 
+   quitBt=new Button();
+   quitBt.setLabel("退出");
+   quitBt.setSize(60,30);
+   quitBt.setLocation(220,220);
+   quitBt.addActionListener(this);
+   lgBt.addActionListener(this);
+   this.addWindowListener(this);
+ 
+   this.add(lgLabel);
+   this.add(pwdLabel);
+   this.add(lgText);
+   this.add(pwdText);
+   this.add(lgBt);
+   this.add(quitBt);
+   this.setVisible(true);
+ 
+  }
+  public static void main(String args[])
+  {
+   LoginWindows main=new LoginWindows();
+ 
+  }
+ @Override
+ public void actionPerformed(ActionEvent e) {
+ 
+  Button bt=(Button) e.getSource();
+  if(bt.getLabel().equals("退出"))
+  {
+   System.exit(0);
+  }
+  else {
+  if ((lgText.getText().equals(""))||(pwdText.getText().equals(""))) 
+   {
+    JOptionPane.showMessageDialog(this,"账号或密码为空");
+   }
+   else
+   {
+     if ((lgText.getText().equals("admin"))&&(pwdText.getText().equals("111"))) 
+   //if((lgText.getText().equals(""))||(pwdText.getText().equals("")))
+    {
+     this.setVisible(false);
+    // Sqlwindow sql=new Sqlwindow();
+     WindowsView w=new WindowsView();
+     w.SciencePro();
+ 
+    }
+    else {
+     JOptionPane.showMessageDialog(this, "没有权限");
+    }
+   }}}
+ 
+ 
+ 
+ 
+ 
+ 
+ @Override
+ public void windowOpened(WindowEvent e) {
+  // TODO Auto-generated method busb
+ 
+ }
+ 
+ @Override
+ public void windowClosing(WindowEvent e) {
+  // TODO Auto-generated method busb
+  System.exit(0);
+ }
+ 
+ @Override
+ public void windowClosed(WindowEvent e) {
+  // TODO Auto-generated method busb
+ 
+ }
+ 
+ @Override
+ public void windowIconified(WindowEvent e) {
+  // TODO Auto-generated method busb
+ 
+ }
+ 
+ @Override
+ public void windowDeiconified(WindowEvent e) {
+  // TODO Auto-generated method busb
+ 
+ }
+ 
+ @Override
+ public void windowActivated(WindowEvent e) {
+  // TODO Auto-generated method busb
+ 
+ }
+ 
+ @Override
+ public void windowDeactivated(WindowEvent e) {
+  // TODO Auto-generated method busb
+ 
+ }
+}

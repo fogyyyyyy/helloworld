@@ -1,0 +1,79 @@
+package 科研信息管理系统;
+
+import javax.swing.JOptionPane;
+
+public class DealSub
+{
+ DealSub()
+ {}
+ public void submit(int num)
+ {
+  Sql sql =new Sql();
+  if(sql.Findbynum(num).GetNum()==0)
+  {
+   JOptionPane.showMessageDialog(null, "不存在该项目");
+  }
+  else
+  {
+   JOptionPane.showMessageDialog(null, "请在下方填写修改后的项目信息");
+  }
+ }
+}
+//处理删除
+package 科研信息管理系统;
+ 
+import javax.swing.JOptionPane;
+ 
+public class DealDelete
+{
+ public DealDelete()
+ {}
+ public void delete(int num)
+ {
+  ScienceProject s=new ScienceProject();
+  Sql sql=new Sql();
+  if(sql.Findbynum(num).GetNum()==0)
+  {
+   JOptionPane.showMessageDialog(null, "不存在该项目~");
+  }
+  else
+  {
+   s=sql.Findbynum(num);
+   sql.DelScienceProject(s);
+   JOptionPane.showMessageDialog(null, "删除成功~");
+  }
+ }
+}
+//处理修改
+package 科研信息管理系统;
+ 
+import javax.swing.JOptionPane;
+ 
+public class DealAlter 
+{
+ public DealAlter()
+ {}
+ public void alter(ScienceProject s)
+ {
+  Sql sql=new Sql();
+  sql.UpdScienceProject(s);
+  JOptionPane.showMessageDialog(null,"修改成功");
+ }
+}
+//处理查询
+package 科研信息管理系统;
+ 
+public class DealSearch //处理查询事件
+{
+ public DealSearch() 
+ {}
+ public String findProByNum(int num)//通过项目编号查询
+ {
+  String result="";
+  ScienceProject s=new ScienceProject();
+  Sql sql=new Sql();
+  s=sql.Findbynum(num);
+  result=s.GetNum()+","+s.GetName()+","+s.GetPeople()+","+s.GetLeader()+","+s.GetTimeStart()+","+s.GetTimeFinish();
+  return result;
+ }
+}

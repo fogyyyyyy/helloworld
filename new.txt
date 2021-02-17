@@ -1,0 +1,16 @@
+	out.write(c,0,n);
+        	}
+        	out.flush();
+        	out.close();
+        	System.out.println("拷贝成功");
+        	
+        }
+        catch(IOException e){
+        	System.out.println("Error"+e);
+        }
+	}       
+
+
+public static File getFile() {
+    Scanner sc = new Scanner(System.in);
+    System.out.println("输入路径：");

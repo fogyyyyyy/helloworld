@@ -1,0 +1,41 @@
+package report;
+
+public class Student {
+		private String no;  //学号
+		private String name;  //姓名
+		private String phone;  //手机号
+
+		//getter setter
+		    public String getNo() {
+		        return no;
+		    }
+		    public void setNo(String no) {
+		        this.no = no;
+		    }
+		    public String getName() {
+		        return name;
+		    }
+		    public void setName(String name) {
+		        this.name = name;
+		    }
+		    public String getPhone() {
+		        return phone;
+		    }
+		    public void setPhone(String phone) {
+		        this.phone = phone;
+		    }
+		    //无参构造函数
+		    public Student() {
+		        super();
+		        // TODO Auto-generated constructor stub
+		      }
+		    //有参构造函数
+		    public Student(String no, String name, String phone) {
+		        super();
+		        this.no = no;
+		        this.name = name;
+		        this.phone = phone;
+		     }
+		
+
+}
